@@ -10,6 +10,17 @@ module.exports = {
         // Add New Guest's socket to Sockets array
         m_sockets.push(socket);
     },
+
+    // Guest confirm his user name
+    OnConfirmName: function(socket, username) {
+        m_sockets.forEach(element => {
+            if(element.id == socket.id)
+                element.username = username
+        });
+        socket.emit("UNAME_CONFIRMED", username);
+    },
+
+    // When a user searches his pair
     OnCreateNewPair: function(socket) {
         // Pull 2 sockets including requested socket, and idle socket and pair it
         var ind1 = 0, ind2=0;
@@ -19,7 +30,7 @@ module.exports = {
         m_sockets.forEach(element => {
             if((element.id != socket.id)){
                 // Add new pair to pairs
-                pairs.push({socket, element});
+                pairs.push({f: socket, s:element});
                 dif_found = true;
                 res_sock = element;
             } else same_found = true;
@@ -42,16 +53,52 @@ module.exports = {
                 break;
             }
         });
-        // Send Search Result to Requested Side
-        if(paired)
-            socket.emit("ON_PAIRED", { username: res_sock.username });
+        // Send Search Result to both Sides
+        if(paired){
+            socket.emit("ON_PAIRED", { username: res_sock.username, pair_id: res_sock.id });
+            res_sock.emit("ON_PAIRED", { username: socket.username, pair_id: socket.id });
+        }
         else socket.emit("ON_PAIRFAILED", null);
     },
-    OnSkipCurrentPair: function(socket) {
 
+    // If user skips current pair and on searching new pair
+    OnSkipCurrentPair: function(socket) {
+        // Define Index of current pair
+        var ind = 0;
+        // Find the pair where current user is joined, remove current pair and add it to sockets array
+        pairs.forEach(element => {
+            if(element.f.id == socket.id || element.s.id == socket.id){
+                m_sockets.push(element.f);
+                m_sockets.push(element.s);
+                break;
+            }   
+            ind ++;
+        });
+        pairs.slice(ind, 1);
+        // Send Skipping pair response and search another pair
+        socket.emit("ON_PAIR_REMOVED", null);
+        this.OnCreateNewPair(socket);
     },
-    OnNewMessage: function(sender_id, receiver_id, text, image, video) {
-        console.log("You received a new message", text);
+
+    // If user send a new message
+    OnNewMessage: function(sender, text, image, video) {  //sender stands for (sender)socket
+        pairs.forEach(element => {
+            if(element.f.id == sender.id){
+                element.s.emit("NEW_MESSAGE", {
+                    sender: sender.id,
+                    msg: text,
+                    img: image,
+                    vid: video
+                });
+            } else if(element.s.id ==  sender.id) {
+                element.f.emit("NEW_MESSAGE", {
+                    sender: sender.id,
+                    msg: text,
+                    img: image,
+                    vid: video
+                });
+            }
+        });
     },
     OnEditMessage: function() {
         console.log("You Edited a Message");

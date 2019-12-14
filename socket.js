@@ -9,8 +9,11 @@ SocketServer = function(http) {
     io.on('connection', function(socket) {
 
         // On New Message
+        /**
+         * data = {msg: MESSAGE TEXT, img: IMAGE URL, vid: VIDEO URL}
+         */
         socket.on(CMD.ON_NEW_MESSAGE, (data) => {
-            ChatController.OnNewMessage("sender", "receiver", "here is your message", null, null);
+            ChatController.OnNewMessage(socket, data.msg, data.img, data.vid);
         });
 
         // On Client Socket disconnected from Server Socket
