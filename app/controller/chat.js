@@ -54,7 +54,7 @@ module.exports = {
                     m_sockets.splice(ind1, 1);
                     paired = true;
                 }
-                break;
+                return;
             }
         });
         // Send Search Result to both Sides
@@ -74,7 +74,7 @@ module.exports = {
             if(element.f.id == socket.id || element.s.id == socket.id){
                 m_sockets.push(element.f);
                 m_sockets.push(element.s);
-                break;
+                return;
             }   
             ind ++;
         });
@@ -96,7 +96,7 @@ module.exports = {
                     vid: video
                 });
                 snd_flag = true;
-                break;
+                return;
             } else if(element.s.id ==  sender.id) {
                 element.f.emit("NEW_MESSAGE", {
                     sender: sender.id,
@@ -105,7 +105,7 @@ module.exports = {
                     vid: video
                 });
                 snd_flag = true;
-                break;
+                return;
             }
         });
         sender.emit("MESSAGE_SENT", {flag: snd_flag});

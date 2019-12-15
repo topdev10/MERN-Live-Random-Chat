@@ -1,4 +1,4 @@
-const CMD = require('./app/const/cmd');
+const CMD = require('./app/const/cmd.json');
 const ChatController = require('./app/controller/chat');
 
 SocketServer = function(http) {

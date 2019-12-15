@@ -44,6 +44,17 @@
                 $(document).on('click', '#find_pair', function(){
                     socket.emit('ON_FIND_PAIR', { username: username.val() });
                 })
+
+                /**
+                 * Socket Receiving Message WorkFlow
+                 * **/
+                 socket.on("ON_PAIRED", (data) => {
+                     console.log("ON_PAIRED", data);
+                 })
+
+                 socket.on("ON_PAIRFAILED", (data) => {
+                     console.log("ON_PAIRFAILED", data);
+                 })
             });
         </script>
         <!-- End Script -->
