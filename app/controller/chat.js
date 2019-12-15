@@ -86,6 +86,7 @@ module.exports = {
 
     // If user send a new message
     OnNewMessage: function(sender, text, image, video) {  //sender stands for (sender)socket
+        var snd_flag = false;
         pairs.forEach(element => {
             if(element.f.id == sender.id){
                 element.s.emit("NEW_MESSAGE", {
@@ -94,6 +95,8 @@ module.exports = {
                     img: image,
                     vid: video
                 });
+                snd_flag = true;
+                break;
             } else if(element.s.id ==  sender.id) {
                 element.f.emit("NEW_MESSAGE", {
                     sender: sender.id,
@@ -101,8 +104,11 @@ module.exports = {
                     img: image,
                     vid: video
                 });
+                snd_flag = true;
+                break;
             }
         });
+        sender.emit("MESSAGE_SENT", {flag: snd_flag});
     },
     OnEditMessage: function() {
         console.log("You Edited a Message");
