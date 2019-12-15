@@ -10,6 +10,8 @@ SocketServer = function(http) {
 
         console.log("New Connection from ", socket.id);
 
+        ChatController.OnNewGuesJoined(socket);
+
         // On New Message
         /**
          * data = {msg: MESSAGE TEXT, img: IMAGE URL, vid: VIDEO URL}

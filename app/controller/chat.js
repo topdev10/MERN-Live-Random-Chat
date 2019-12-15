@@ -9,6 +9,7 @@ module.exports = {
     OnNewGuesJoined: function(socket) {
         // Add New Guest's socket to Sockets array
         m_sockets.push(socket);
+        console.log(m_sockets);
     },
 
     // Guest confirm his user name
@@ -23,6 +24,7 @@ module.exports = {
     // When a user searches his pair
     OnCreateNewPair: function(socket) {
         // Pull 2 sockets including requested socket, and idle socket and pair it
+        console.log(m_sockets, pairs);
         var ind1 = 0, ind2=0;
         var dif_found = false, same_found = false;
         var res_sock;
