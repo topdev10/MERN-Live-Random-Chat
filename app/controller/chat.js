@@ -112,5 +112,10 @@ module.exports = {
     },
     OnEditMessage: function() {
         console.log("You Edited a Message");
+    },
+
+    // On Socket Connection Closed
+    OnCloseConnection: function(socket) {
+        console.log("Connection Closed: ", socket.id);
     }
 }

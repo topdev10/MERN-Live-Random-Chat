@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pure Real-Time Random Chat Online</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                Feel Free to Chat with others here...
+                <button id="find_pair">Find Pair</button>
+            </div>
+            <div class="main">
+                <input type="text" placeholder="Username" id="username" >
+                <button id="confirm_username">Confirm</button>
+                <input type="text" placeholder="message" id="message" >
+                <button id="send_message">Send</button>
+            </div>
+        </div>
+        <!-- Browsing JS Libraries -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+        <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+        <!-- End of Browsing JS Libraries-->
+
+        <!-- Customized Script -->
+        <script>
+            $(function() {
+                let socket = io.connect('http://localhost:8001', {
+                    query : {
+                        user_type:"guest"
+                    }
+                })
+
+                var username = $('#username');
+                var confirmBtn = $('#confirm_username');
+                var message = $('#message');
+                var send = $('#send_message');
+                var find_pair = $("#find_pair");
+
+                $(document).on('click', '#confirm_username', function(){
+                    console.log(username.val());
+                    socket.emit('ON_CONFIRM_NAME', { username: username.val() });
+                })
+
+                $(document).on('click', '#find_pair', function(){
+                    socket.emit('ON_FIND_PAIR', { username: username.val() });
+                })
+            });
+        </script>
+        <!-- End Script -->
+    </body>
+</html>
