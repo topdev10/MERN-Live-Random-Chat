@@ -28,12 +28,16 @@ module.exports = {
         var res_sock;
         var paired = false;
         m_sockets.forEach(element => {
-            if((element.id != socket.id)){
+            if((element.id != socket.id && element.isSearching)){
                 // Add new pair to pairs
                 pairs.push({f: socket, s:element});
                 dif_found = true;
                 res_sock = element;
-            } else same_found = true;
+            } else if(element.id == socket.id){
+                same_found = true;
+                element.isSearching = true;
+            }
+
 
             if(!dif_found)
                 ind1 ++;
