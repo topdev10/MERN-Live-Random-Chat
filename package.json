@@ -1,5 +1,5 @@
 {
-  "name": "RandomChat",
+  "name": "randomchat",
   "version": "1.0.0",
   "description": "Live Random Chat",
   "main": "server.js",
