@@ -9,7 +9,6 @@ module.exports = {
     OnNewGuesJoined: function(socket) {
         // Add New Guest's socket to Sockets array
         m_sockets.push(socket);
-        console.log(m_sockets);
     },
 
     // Guest confirm his user name
@@ -24,7 +23,6 @@ module.exports = {
     // When a user searches his pair
     OnCreateNewPair: function(socket) {
         // Pull 2 sockets including requested socket, and idle socket and pair it
-        console.log(m_sockets, pairs);
         var ind1 = 0, ind2=0;
         var dif_found = false, same_found = false;
         var res_sock;
@@ -118,6 +116,24 @@ module.exports = {
 
     // On Socket Connection Closed
     OnCloseConnection: function(socket) {
-        console.log("Connection Closed: ", socket.id);
+        // Find if closed guest is not yet paired and remove it from sockets list if not paired yet.
+        var ind = 0;
+        m_sockets.forEach(element => {
+            if(element.id == socket.id)
+                return;
+            ind ++;
+        });
+        m_sockets.slice(ind, 1);
+
+        // Find if closed guest is paired and remove that socket from pair group, and move paired guest to sockets list
+        ind = 0;
+        pairs.forEach(element => {
+            if(element.f.id == socket.id || element.s.id == socket.id)
+                return;
+            ind ++;
+        });
+        if(pairs[ind].f.id == socket.id) m_sockets.push(pairs[ind].s);
+        else m_sockets.push(pairs[ind].f);
+        pairs.slice(ind, 1);
     }
 }
