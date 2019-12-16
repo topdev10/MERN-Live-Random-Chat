@@ -90,7 +90,7 @@ module.exports = {
         pairs.forEach(element => {
             if(element.f.id == sender.id){
                 element.s.emit("NEW_MESSAGE", {
-                    sender: sender.id,
+                    sender: sender.username,
                     msg: text,
                     img: image,
                     vid: video
@@ -99,7 +99,7 @@ module.exports = {
                 return;
             } else if(element.s.id ==  sender.id) {
                 element.f.emit("NEW_MESSAGE", {
-                    sender: sender.id,
+                    sender: sender.username,
                     msg: text,
                     img: image,
                     vid: video
@@ -132,8 +132,10 @@ module.exports = {
                 return;
             ind ++;
         });
-        if(pairs[ind].f.id == socket.id) m_sockets.push(pairs[ind].s);
-        else m_sockets.push(pairs[ind].f);
-        pairs.slice(ind, 1);
+        if(pairs.length > 0) {
+            if(pairs[ind].f.id == socket.id) m_sockets.push(pairs[ind].s);
+            else m_sockets.push(pairs[ind].f);
+            pairs.slice(ind, 1);
+        }
     }
 }

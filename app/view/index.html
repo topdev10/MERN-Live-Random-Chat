@@ -60,7 +60,7 @@
                         img: null,                  // Message Image URL
                         vid: null                   // Message Video URL
                     });
-                    var n_content = "<div class='snd_msg'>" + message.val() + "</div>";
+                    var n_content = "<div class='snd_msg'>" + "You: " + message.val() + "</div>";
                     chatting_history.append(n_content);
                 })
 
@@ -81,7 +81,7 @@
                  // On Receive New Message
                  socket.on("NEW_MESSAGE", (data) => {
                     console.log("ON NEW MESSAGE", data);
-                    var n_content = "<div class='rcv_msg'>" + data.msg + "</div>";
+                    var n_content = "<div class='rcv_msg'>" + data.sender + ": " + data.msg + "</div>";
                     chatting_history.append(n_content);
                  });
             });

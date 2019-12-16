@@ -17,7 +17,6 @@ SocketServer = function(http) {
          * data = {msg: MESSAGE TEXT, img: IMAGE URL, vid: VIDEO URL}
          */
         socket.on(CMD.ON_NEW_MESSAGE, (data) => {
-            console.log(data);
             ChatController.OnNewMessage(socket, data.msg, data.img, data.vid);
         });
 
