@@ -11,7 +11,6 @@ app.get('/', function(req, res) {
     res.sendFile(__dirname + '/app/view/index.html');
 });
 
-console.log(process.env.MODE);
 exports.server = http.listen(
     (process.env.MODE == "development")?process.env.DEV_PORT:process.env.PROD_PORT
 )
